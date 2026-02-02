@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Something Special ❤️</title>
+
+<style>
+    body {
+        margin: 0;
+        height: 100vh;
+        overflow: hidden;
+        background: linear-gradient(135deg, #ff758c, #ff7eb3);
+        font-family: Arial, sans-serif;
+        text-align: center;
+        color: white;
+        position: relative;
+    }
+
+    h1, h2, p {
+        margin-top: 20px;
+        z-index: 2;
+        position: relative;
+    }
+
+    #heart {
+        position: absolute;
+        font-size: 40px;
+        cursor: pointer;
+        z-index: 3;
+    }
+
+    button {
+        padding: 12px 25px;
+        margin: 15px;
+        font-size: 18px;
+        border: none;
+        border-radius: 30px;
+        cursor: pointer;
+        transition: 0.3s;
+        z-index: 3;
+        position: relative;
+    }
+
+    #yesBtn {
+        background-color: #ff4d6d;
+        color: white;
+    }
+
+    #noBtn {
+        background-color: #ccc;
+        position: absolute;
+    }
+
+    /* Floating hearts background */
+    .floating-heart {
+        position: absolute;
+        bottom: -20px;
+        font-size: 20px;
+        animation: floatUp linear infinite;
+        opacity: 0.8;
+    }
+
+    @keyframes floatUp {
+        from {
+            transform: translateY(0);
+            opacity: 0.8;
+        }
+        to {
+            transform: translateY(-110vh);
+            opacity: 0;
+        }
+    }
+</style>
+</head>
+
+<body>
+
+<h1 id="title">Catch 5 Hearts 💕</h1>
+<h2 id="score">Hearts Caught: 0</h2>
+<div id="heart">❤️</div>
+
+<script>
+    const heart = document.getElementById("heart");
+    const scoreText = document.getElementById("score");
+
+    let score = 0;
+
+    function moveHeart() {
+        const x = Math.random() * (window.innerWidth - 50);
+        const y = Math.random() * (window.innerHeight - 50);
+        heart.style.left = x + "px";
+        heart.style.top = y + "px";
+    }
+
+    heart.addEventListener("click", function() {
+        score++;
+        scoreText.textContent = "Hearts Caught: " + score;
+        moveHeart();
+
+        if(score === 5) {
+            showValentineMessage();
+        }
+    });
+
+    function showValentineMessage() {
+        document.body.innerHTML = `
+            <div style="margin-top:100px;">
+                <h1>Hey Beautiful ❤️</h1>
+                <p>
+                    I tried debugging my feelings... <br>
+                    Turns out they’re not errors. <br>
+                    They’re real. <br><br>
+                    So... will you be my Valentine?
+                </p>
+                <button id="yesBtn">Yes 💖</button>
+                <button id="noBtn">No 😅</button>
+            </div>
+        `;
+
+        startFloatingHearts();
+
+        const noBtn = document.getElementById("noBtn");
+        const yesBtn = document.getElementById("yesBtn");
+
+        noBtn.addEventListener("mouseover", function() {
+            const x = Math.random() * (window.innerWidth - 100);
+            const y = Math.random() * (window.innerHeight - 50);
+            noBtn.style.left = x + "px";
+            noBtn.style.top = y + "px";
+        });
+
+        yesBtn.addEventListener("click", function() {
+            document.body.innerHTML = `
+                <div style="margin-top:150px;">
+                    <h1 style="font-size:50px;">You just made me the happiest guy ❤️</h1>
+                    <h2>Can’t wait for our Valentine’s date</h2>
+                </div>
+            `;
+            startFloatingHearts();
+        });
+    }
+
+    function createFloatingHeart() {
+        const floatingHeart = document.createElement("div");
+        floatingHeart.classList.add("floating-heart");
+        floatingHeart.innerHTML = "❤️";
+        floatingHeart.style.left = Math.random() * 100 + "vw";
+        floatingHeart.style.animationDuration = (Math.random() * 3 + 2) + "s";
+        floatingHeart.style.fontSize = (Math.random() * 20 + 15) + "px";
+
+        document.body.appendChild(floatingHeart);
+
+        setTimeout(() => {
+            floatingHeart.remove();
+        }, 5000);
+    }
+
+    function startFloatingHearts() {
+        setInterval(createFloatingHeart, 300);
+    }
+
+    // Start hearts immediately
+    startFloatingHearts();
+    moveHeart();
+</script>
+
+</body>
+</html>
