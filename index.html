@@ -6,6 +6,10 @@
 <title>Something Special ❤️</title>
 
 <style>
+    * {
+        box-sizing: border-box;
+    }
+
     body {
         margin: 0;
         height: 100vh;
@@ -14,13 +18,23 @@
         font-family: Arial, sans-serif;
         text-align: center;
         color: white;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
         position: relative;
     }
 
-    h1, h2, p {
-        margin-top: 20px;
+    h1 {
+        font-size: clamp(24px, 5vw, 36px);
+        margin-bottom: 10px;
         z-index: 2;
-        position: relative;
+    }
+
+    h2, p {
+        font-size: clamp(16px, 4vw, 20px);
+        z-index: 2;
     }
 
     #heart {
@@ -30,15 +44,18 @@
         z-index: 3;
     }
 
+    .content {
+        max-width: 500px;
+        z-index: 3;
+    }
+
     button {
         padding: 12px 25px;
-        margin: 15px;
-        font-size: 18px;
+        margin: 10px;
+        font-size: 16px;
         border: none;
         border-radius: 30px;
         cursor: pointer;
-        transition: 0.3s;
-        z-index: 3;
         position: relative;
     }
 
@@ -52,13 +69,14 @@
         position: absolute;
     }
 
-    /* Floating hearts background */
+    /* Floating hearts */
     .floating-heart {
         position: absolute;
         bottom: -20px;
         font-size: 20px;
         animation: floatUp linear infinite;
         opacity: 0.8;
+        pointer-events: none;
     }
 
     @keyframes floatUp {
@@ -76,8 +94,11 @@
 
 <body>
 
-<h1 id="title">Catch 5 Hearts 💕</h1>
-<h2 id="score">Hearts Caught: 0</h2>
+<div class="content" id="gameArea">
+    <h1>Catch 5 Hearts 💕</h1>
+    <h2 id="score">Hearts Caught: 0</h2>
+</div>
+
 <div id="heart">❤️</div>
 
 <script>
@@ -87,8 +108,9 @@
     let score = 0;
 
     function moveHeart() {
-        const x = Math.random() * (window.innerWidth - 50);
-        const y = Math.random() * (window.innerHeight - 50);
+        const padding = 60;
+        const x = Math.random() * (window.innerWidth - padding);
+        const y = Math.random() * (window.innerHeight - padding);
         heart.style.left = x + "px";
         heart.style.top = y + "px";
     }
@@ -105,7 +127,7 @@
 
     function showValentineMessage() {
         document.body.innerHTML = `
-            <div style="margin-top:100px;">
+            <div class="content" style="margin-top:50px;">
                 <h1>Hey Beautiful ❤️</h1>
                 <p>
                     I tried debugging my feelings... <br>
@@ -113,8 +135,10 @@
                     They’re real. <br><br>
                     So... will you be my Valentine?
                 </p>
-                <button id="yesBtn">Yes 💖</button>
-                <button id="noBtn">No 😅</button>
+                <div style="margin-top:20px;">
+                    <button id="yesBtn">Yes 💖</button>
+                    <button id="noBtn">No 😅</button>
+                </div>
             </div>
         `;
 
@@ -123,18 +147,22 @@
         const noBtn = document.getElementById("noBtn");
         const yesBtn = document.getElementById("yesBtn");
 
-        noBtn.addEventListener("mouseover", function() {
-            const x = Math.random() * (window.innerWidth - 100);
-            const y = Math.random() * (window.innerHeight - 50);
+        noBtn.addEventListener("touchstart", moveNoButton);
+        noBtn.addEventListener("mouseover", moveNoButton);
+
+        function moveNoButton() {
+            const padding = 100;
+            const x = Math.random() * (window.innerWidth - padding);
+            const y = Math.random() * (window.innerHeight - padding);
             noBtn.style.left = x + "px";
             noBtn.style.top = y + "px";
-        });
+        }
 
         yesBtn.addEventListener("click", function() {
             document.body.innerHTML = `
-                <div style="margin-top:150px;">
-                    <h1 style="font-size:50px;">You just made me the happiest guy ❤️</h1>
-                    <h2>Can’t wait for our Valentine’s date</h2>
+                <div class="content" style="margin-top:100px;">
+                    <h1>You just made me the happiest guy ❤️</h1>
+                    <h2>Can’t wait for our Valentine’s date yeey</h2>
                 </div>
             `;
             startFloatingHearts();
@@ -146,21 +174,23 @@
         floatingHeart.classList.add("floating-heart");
         floatingHeart.innerHTML = "❤️";
         floatingHeart.style.left = Math.random() * 100 + "vw";
-        floatingHeart.style.animationDuration = (Math.random() * 3 + 2) + "s";
-        floatingHeart.style.fontSize = (Math.random() * 20 + 15) + "px";
+        floatingHeart.style.animationDuration = (Math.random() * 3 + 3) + "s";
+        floatingHeart.style.fontSize = (Math.random() * 15 + 15) + "px";
 
         document.body.appendChild(floatingHeart);
 
         setTimeout(() => {
             floatingHeart.remove();
-        }, 5000);
+        }, 6000);
     }
+
+
+
 
     function startFloatingHearts() {
-        setInterval(createFloatingHeart, 300);
+        setInterval(createFloatingHeart, 400);
     }
 
-    // Start hearts immediately
     startFloatingHearts();
     moveHeart();
 </script>
